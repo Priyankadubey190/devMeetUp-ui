@@ -5,9 +5,13 @@ import { addUser, type IUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 
-interface ILoginResponse extends IUser {}
+interface ILoginResponse {
+  message: string;
+  user: IUser;
+}
 interface ISignUpResponse {
-  data: IUser;
+  message: string;
+  user: IUser;
 }
 
 const Login: React.FC = () => {
@@ -28,7 +32,7 @@ const Login: React.FC = () => {
         { emailId, password },
         { withCredentials: true },
       );
-      dispatch(addUser(res.data));
+      dispatch(addUser(res.data.user));
       navigate("/");
     } catch (err) {
       const axiosError = err as AxiosError<string>;
@@ -43,7 +47,7 @@ const Login: React.FC = () => {
         { firstName, lastName, emailId, password },
         { withCredentials: true },
       );
-      dispatch(addUser(res.data.data));
+      dispatch(addUser(res.data.user));
       navigate("/profile");
     } catch (err) {
       const axiosError = err as AxiosError<string>;

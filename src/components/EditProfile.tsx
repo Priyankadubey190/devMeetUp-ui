@@ -5,6 +5,12 @@ import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser, type IUser } from "../redux/userSlice";
 
+interface IEditProfileResponse {
+  success: boolean;
+  message: string;
+  user: IUser;
+}
+
 interface EditProfileProps {
   user: IUser;
 }
@@ -24,7 +30,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user }) => {
   const saveProfile = async (): Promise<void> => {
     setError("");
     try {
-      const res = await axios.patch(
+      const res = await axios.patch<IEditProfileResponse>(
         `${BASE_URL}/profile/edit`,
         {
           firstName,
@@ -37,7 +43,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ user }) => {
         { withCredentials: true },
       );
 
-      dispatch(addUser(res?.data?.data));
+      dispatch(addUser(res.data.user));
 
       setShowToast(true);
       setTimeout(() => {
