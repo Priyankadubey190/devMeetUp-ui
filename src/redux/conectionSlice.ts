@@ -19,6 +19,7 @@ const connectionSlice = createSlice({
   initialState: initialState as ConnectionState,
   reducers: {
     addConnections: (state, action: PayloadAction<IUser[]>) => {
+      void state;
       return action.payload;
     },
 

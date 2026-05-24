@@ -19,6 +19,7 @@ const feedSlice = createSlice({
   initialState: initialState as FeedState,
   reducers: {
     addFeed: (state, action: PayloadAction<IUser[]>) => {
+      void state;
       return action.payload;
     },
 

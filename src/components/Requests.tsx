@@ -73,15 +73,8 @@ const Requests: React.FC = () => {
       </h1>
 
       {requests.map((request) => {
-        const {
-          _id: userId,
-          firstName,
-          lastName,
-          photoUrl,
-          age,
-          gender,
-          about,
-        } = request.fromUserId;
+        const { firstName, lastName, photoUrl, age, gender, about } =
+          request.fromUserId;
 
         return (
           <div

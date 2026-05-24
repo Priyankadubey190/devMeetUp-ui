@@ -16,6 +16,7 @@ const requestSlice = createSlice({
   initialState: initialState as RequestState,
   reducers: {
     addRequests: (state, action: PayloadAction<IConnectionRequest[]>) => {
+      void state;
       return action.payload;
     },
 
