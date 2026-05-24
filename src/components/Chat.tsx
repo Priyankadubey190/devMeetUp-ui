@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { createSocketConnection } from "../utils/socket";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import type { IUser } from "../redux/userSlice";
+import type { Socket } from "socket.io-client";
 
 interface IMessage {
   firstName: string;
@@ -31,6 +32,7 @@ const Chat: React.FC = () => {
 
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
+  const socketRef = useRef<Socket | null>(null);
 
   const user = useSelector((store: RootState) => store.user);
   const userId = user?._id;
@@ -68,6 +70,7 @@ const Chat: React.FC = () => {
     if (!userId || !targetUserId) return;
 
     const socket = createSocketConnection();
+    socketRef.current = socket;
 
     socket.emit("joinChat", {
       firstName: user?.firstName,
@@ -81,14 +84,14 @@ const Chat: React.FC = () => {
 
     return () => {
       socket.disconnect();
+      socketRef.current = null;
     };
   }, [userId, targetUserId]);
 
   const sendMessage = (): void => {
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || !socketRef.current) return;
 
-    const socket = createSocketConnection();
-    socket.emit("sendMessage", {
+    socketRef.current.emit("sendMessage", {
       firstName: user?.firstName,
       lastName: user?.lastName,
       userId,

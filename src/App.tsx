@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Provider } from "react-redux";
 import appStore from "./redux/appStore";
 
@@ -25,15 +25,16 @@ const App: React.FC = () => {
       <BrowserRouter basename="/">
         <Suspense fallback={<PageLoader />}>
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Body />}>
-              <Route path="/" element={<Feed />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/connections" element={<Connections />} />
-              <Route path="/requests" element={<Requests />} />
-              <Route path="/premium" element={<Premium />} />
-              <Route path="/chat/:targetUserId" element={<Chat />} />
+              <Route index element={<Feed />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="connections" element={<Connections />} />
+              <Route path="requests" element={<Requests />} />
+              <Route path="premium" element={<Premium />} />
+              <Route path="chat/:targetUserId" element={<Chat />} />
             </Route>
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

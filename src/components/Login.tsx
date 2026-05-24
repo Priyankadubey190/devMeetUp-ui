@@ -48,7 +48,7 @@ const Login: React.FC = () => {
         { withCredentials: true },
       );
       dispatch(addUser(res.data.user));
-      navigate("/profile");
+      navigate("/");
     } catch (err) {
       const axiosError = err as AxiosError<string>;
       setError(
